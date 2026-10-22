@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mix-ready"
+dynamic = ["version"]
+description = "Mix Ready: checks a mix before it goes to mastering"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Axel (ROMMUSER)"}]
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.26", "scipy>=1.11", "soundfile>=0.12"]
+
+[project.scripts]
+mix-ready = "mix_ready.cli:main"
+mix-ready-gui = "mix_ready.gui:main"
+
+[project.urls]
+Homepage = "https://github.com/axelfj/mix-ready"
+Issues = "https://github.com/axelfj/mix-ready/issues"
+
+[tool.setuptools]
+packages = ["mix_ready"]
+
+[tool.setuptools.dynamic]
+version = {attr = "mix_ready.__version__"}
