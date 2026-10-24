@@ -56,7 +56,7 @@ def text(results):
 
 
 def to_json(results):
-    return json.dumps({"app": APP_NAME, "version": __version__, "results": results}, indent=2)
+    return json.dumps({"app": APP_NAME, "version": __version__, "results": results}, indent=2, allow_nan=False)
 
 
 CSS = """
@@ -93,3 +93,4 @@ def to_html(results):
         out.append("</ul>")
     out.append("<p>%s</p>" % e(STUDIO_LINE))
     return "\n".join(out)
+

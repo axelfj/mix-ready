@@ -91,6 +91,14 @@ def check(fmt, m):
     peak, tp, i, plr = (m["sample_peak_dbfs"], m["true_peak_dbtp"], m["integrated_lufs"],
                         m["plr_db"])
 
+    # Silence is not a valid pre-master. A short non-silent file may have
+    # unmeasurable LUFS, so distinguish it using sample peak.
+    if peak == loudness.NEG_INF:
+        out.append(finding(FAIL, "The file is silent.", "Export a bounce containing the mix audio."))
+    elif not math.isfinite(i):
+        out.append(finding(WARN, "Not enough measurable audio for integrated loudness.",
+                           "Export a longer passage or the full track."))
+
     # File format
     if fmt["rate"] < 44100:
         out.append(finding(FAIL, "Sample rate is %d Hz." % fmt["rate"],
@@ -177,4 +185,5 @@ def analyze(path):
 
 
 def _clean(m):
-    return {k: (None if isinstance(v, float) and math.isinf(v) else v) for k, v in m.items()}
+    return {k: (None if isinstance(v, float) and not math.isfinite(v) else v) for k, v in m.items()}
+
